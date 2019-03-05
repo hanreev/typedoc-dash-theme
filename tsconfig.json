@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "target": "es6",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "experimentalDecorators": true,
+    "outDir": "bin",
+    "lib": [
+      "dom", "es2015"
+    ]
+  },
+  "include": [
+    "src/**/*.ts"
+  ]
+}
