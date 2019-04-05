@@ -1,8 +1,8 @@
-import * as sqlite3 from 'sqlite3';
 import * as path from 'path';
+import * as sqlite3 from 'sqlite3';
+import { DeclarationReflection, Reflection, ReflectionKind, Renderer } from 'typedoc';
 import { RendererComponent } from 'typedoc/dist/lib/output/components';
-import { Renderer, Reflection } from 'typedoc';
-import { RendererEvent, PageEvent } from 'typedoc/dist/lib/output/events';
+import { PageEvent, RendererEvent } from 'typedoc/dist/lib/output/events';
 import { ensureDirectoriesExist } from 'typedoc/dist/lib/utils';
 import { DashTypeKind } from './dash-type-kind';
 
@@ -30,7 +30,6 @@ export class DashIndexPlugin extends RendererComponent {
     this.db.serialize();
     this.db.run('CREATE TABLE searchIndex(id INTEGER PRIMARY KEY, name TEXT, type TEXT, path TEXT)');
     this.db.run('CREATE UNIQUE INDEX anchor ON searchIndex (name, type, path)');
-
   }
 
   private onRendererEnd(event: RendererEvent) {
@@ -41,16 +40,31 @@ export class DashIndexPlugin extends RendererComponent {
     // redirect page to the documents folder
     page.filename = path.join(this.documentsPath, page.url);
 
-    const model = page.model instanceof Reflection;
-    const dashTypeKind = DashTypeKind[page.model.kind];
+    const model = page.model as DeclarationReflection;
+    const dashTypeKind = DashTypeKind[model.kind];
 
-    if (!(page.model.name && dashTypeKind && page.url))
-      return;
+    if (model.name && dashTypeKind && page.url) {
+      this._addIndex(model.name, dashTypeKind, page.url);
 
+      if (Array.isArray(model.children))
+        model.children.forEach(child => {
+          if (!child.kindOf([ReflectionKind.Function, ReflectionKind.Method, ReflectionKind.Property]))
+            return;
+
+          const childDashTypeKind = DashTypeKind[child.kind];
+          if (child.name && childDashTypeKind && child.url) {
+            const name = child.kindOf(ReflectionKind.Function) ? child.name : `${model.name}.${child.name}`;
+            this._addIndex(name, childDashTypeKind, child.url);
+          }
+        });
+    }
+  }
+
+  private _addIndex(name: string, type: string, url: string) {
     this.db.run(
       'INSERT OR IGNORE INTO searchIndex(name, type, path) VALUES (?, ?, ?)',
-      [page.model.name, dashTypeKind, page.url],
-      (res: sqlite3.RunResult, err: Error) => err && console.log(err),
+      [name, type, url],
+      (_: sqlite3.RunResult, err: Error) => err && console.log(err),
     );
   }
 }

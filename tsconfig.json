@@ -6,7 +6,11 @@
     "experimentalDecorators": true,
     "outDir": "bin",
     "lib": [
-      "dom", "es2015"
+      "dom",
+      "esnext"
+    ],
+    "typeRoots": [
+      "@types"
     ]
   },
   "include": [

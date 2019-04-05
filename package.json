@@ -3,7 +3,10 @@
   "version": "1.1.0",
   "description": "Dash theme for TypeDoc.",
   "main": "bin/plugin.js",
-  "scripts": {},
+  "scripts": {
+    "compile": "tsc",
+    "watch": "tsc -w"
+  },
   "keywords": [
     "typescript",
     "typedoc"
@@ -16,12 +19,10 @@
     "name": "Aleksey Gureiev",
     "url": "http://noizeramp.com"
   },
-  "licenses": [
-    {
-      "type": "Apache-2.0",
-      "url": "https://github.com/alg/typedoc-dash-theme/blob/master/LICENSE"
-    }
-  ],
+  "licenses": [{
+    "type": "Apache-2.0",
+    "url": "https://github.com/alg/typedoc-dash-theme/blob/master/LICENSE"
+  }],
   "bugs": {
     "url": "https://github.com/alg/typedoc-dash-theme/issues"
   },
@@ -41,11 +42,9 @@
     "LICENSE",
     "bin"
   ],
-  "maintainers": [
-    {
-      "name": "Aleksey Gureiev",
-      "email": "spyromus@noizeramp.com"
-    }
-  ],
+  "maintainers": [{
+    "name": "Aleksey Gureiev",
+    "email": "spyromus@noizeramp.com"
+  }],
   "optionalDependencies": {}
 }

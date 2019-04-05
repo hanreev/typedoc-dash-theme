@@ -1,8 +1,6 @@
 import * as fs from 'fs-extra';
 import * as path from 'path';
-import { DashAssetsPlugin } from './dash-assets-plugin';
-import { DashIndexPlugin } from './dash-index-plugin';
-import { InfoPlistPlugin } from './info-plist-plugin';
+import { NavigationItem, UrlMapping } from 'typedoc';
 import {
   ContainerReflection,
   DeclarationReflection,
@@ -10,37 +8,41 @@ import {
   Reflection,
   ReflectionKind
 } from 'typedoc/dist/lib/models';
-import { ParameterType } from 'typedoc/dist/lib/utils/options/declaration';
 import { ReflectionGroup } from 'typedoc/dist/lib/models/ReflectionGroup';
-import { Renderer } from 'typedoc/dist/lib/output/renderer';
 import { RendererEvent } from 'typedoc/dist/lib/output/events';
+import { Renderer } from 'typedoc/dist/lib/output/renderer';
 import { Theme } from 'typedoc/dist/lib/output/theme';
-import { UrlMapping, NavigationItem } from 'typedoc';
+import { ParameterType } from 'typedoc/dist/lib/utils/options/declaration';
+import { DashAssetsPlugin } from './dash-assets-plugin';
+import { DashIndexPlugin } from './dash-index-plugin';
 import { DashTypeKind } from './dash-type-kind';
+import { InfoPlistPlugin } from './info-plist-plugin';
 
 export class DashDocsetTheme extends Theme {
 
-  static MAPPINGS = [{
-    kind: [ReflectionKind.Class],
-    isLeaf: false,
-    directory: 'classes',
-    template: 'reflection.hbs',
-  }, {
-    kind: [ReflectionKind.Interface],
-    isLeaf: false,
-    directory: 'interfaces',
-    template: 'reflection.hbs',
-  }, {
-    kind: [ReflectionKind.Enum],
-    isLeaf: false,
-    directory: 'enums',
-    template: 'reflection.hbs',
-  }, {
-    kind: [ReflectionKind.Module, ReflectionKind.ExternalModule],
-    isLeaf: false,
-    directory: 'modules',
-    template: 'reflection.hbs',
-  }];
+  static MAPPINGS = [
+    {
+      kind: [ReflectionKind.Class],
+      isLeaf: false,
+      directory: 'classes',
+      template: 'reflection.hbs',
+    }, {
+      kind: [ReflectionKind.Interface],
+      isLeaf: false,
+      directory: 'interfaces',
+      template: 'reflection.hbs',
+    }, {
+      kind: [ReflectionKind.Enum],
+      isLeaf: false,
+      directory: 'enums',
+      template: 'reflection.hbs',
+    }, {
+      kind: [ReflectionKind.Module, ReflectionKind.ExternalModule],
+      isLeaf: false,
+      directory: 'modules',
+      template: 'reflection.hbs',
+    }
+  ];
 
   static getUrl(reflection: Reflection, relative?: Reflection, separator = '.') {
     let url = reflection.getAlias();
@@ -340,10 +342,6 @@ export class DashDocsetTheme extends Theme {
     }
     const entryPoint = this.getEntryPoint(project);
     return build(this.owner.application.options.getValue('readme') !== 'none');
-  }
-
-  createDatabase() {
-    return null;
   }
 
   private onRendererBegin(event: RendererEvent) {

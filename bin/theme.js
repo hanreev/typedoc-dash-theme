@@ -2,15 +2,15 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const fs = require("fs-extra");
 const path = require("path");
-const dash_assets_plugin_1 = require("./dash-assets-plugin");
-const dash_index_plugin_1 = require("./dash-index-plugin");
-const info_plist_plugin_1 = require("./info-plist-plugin");
+const typedoc_1 = require("typedoc");
 const models_1 = require("typedoc/dist/lib/models");
-const declaration_1 = require("typedoc/dist/lib/utils/options/declaration");
 const events_1 = require("typedoc/dist/lib/output/events");
 const theme_1 = require("typedoc/dist/lib/output/theme");
-const typedoc_1 = require("typedoc");
+const declaration_1 = require("typedoc/dist/lib/utils/options/declaration");
+const dash_assets_plugin_1 = require("./dash-assets-plugin");
+const dash_index_plugin_1 = require("./dash-index-plugin");
 const dash_type_kind_1 = require("./dash-type-kind");
+const info_plist_plugin_1 = require("./info-plist-plugin");
 class DashDocsetTheme extends theme_1.Theme {
     constructor(renderer, basePath) {
         super(renderer, basePath);
@@ -267,9 +267,6 @@ class DashDocsetTheme extends theme_1.Theme {
         const entryPoint = this.getEntryPoint(project);
         return build(this.owner.application.options.getValue('readme') !== 'none');
     }
-    createDatabase() {
-        return null;
-    }
     onRendererBegin(event) {
         if (event.project.groups)
             event.project.groups.forEach(DashDocsetTheme.applyGroupClasses);
@@ -284,7 +281,8 @@ class DashDocsetTheme extends theme_1.Theme {
         }
     }
 }
-DashDocsetTheme.MAPPINGS = [{
+DashDocsetTheme.MAPPINGS = [
+    {
         kind: [models_1.ReflectionKind.Class],
         isLeaf: false,
         directory: 'classes',
@@ -304,6 +302,7 @@ DashDocsetTheme.MAPPINGS = [{
         isLeaf: false,
         directory: 'modules',
         template: 'reflection.hbs',
-    }];
+    }
+];
 exports.DashDocsetTheme = DashDocsetTheme;
 exports.default = DashDocsetTheme;
