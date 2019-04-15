@@ -14,5 +14,7 @@
 		<string>dashtoc</string>
 		<key>dashIndexFilePath</key>
 		<string>index.html</string>
+		<key>DashDocSetPlayURL</key>
+		<string>https://play.nativescript.org</string>
 	</dict>
 </plist>
