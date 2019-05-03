@@ -272,7 +272,7 @@ class DashDocsetTheme extends theme_1.Theme {
             event.project.groups.forEach(DashDocsetTheme.applyGroupClasses);
         for (const id in event.project.reflections) {
             const reflection = event.project.reflections[id];
-            if (reflection instanceof models_1.DeclarationReflection) {
+            if (reflection.constructor.name === 'DeclarationReflection') {
                 DashDocsetTheme.applyReflectionClasses(reflection);
                 DashDocsetTheme.applyReflectionDashKind(reflection);
             }

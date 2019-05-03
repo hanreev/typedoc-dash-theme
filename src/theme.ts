@@ -351,9 +351,9 @@ export class DashDocsetTheme extends Theme {
     for (const id in event.project.reflections) {
       const reflection = event.project.reflections[id];
 
-      if (reflection instanceof DeclarationReflection) {
-        DashDocsetTheme.applyReflectionClasses(reflection);
-        DashDocsetTheme.applyReflectionDashKind(reflection);
+      if (reflection.constructor.name === 'DeclarationReflection') {
+        DashDocsetTheme.applyReflectionClasses(reflection as DeclarationReflection);
+        DashDocsetTheme.applyReflectionDashKind(reflection as DeclarationReflection);
       }
 
       if (reflection instanceof ContainerReflection && reflection.groups)
